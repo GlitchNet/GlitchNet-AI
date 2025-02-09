@@ -1,0 +1,26 @@
+GlitchNet/
+├── contracts/
+│   ├── DynamicFlawedContract.sol       # Main upgradable contract
+│   ├── BugMining.sol                   # AI glitch interaction system
+│   ├── AntiLoyaltyTax.sol              # HODL penalty mechanism
+│   ├── GlitchGraffiti.sol              # On-chain code vandalism
+│   └── libraries/
+│       ├── BugTemplates.sol            # Predefined bug patterns
+│       └── ChaosMath.sol               # Custom "flawed" math operations
+├── ai-engine/
+│   ├── glitch_gpt.py                   # AI response generator
+│   ├── error_validator.py              # Error classification system
+│   └── nft_metadata.py                 # Dynamic NFT metadata builder
+├── frontend/
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── BugHunter.jsx           # AI glitch interface
+│   │   │   └── ChaosCanvas.jsx         # On-chain graffiti editor
+│   │   └── utils/
+│   │       └── glitch-utils.js         # Web3 interaction helpers
+├── scripts/
+│   ├── deploy_contracts.js             # Deployment scripts
+│   └── daily_bug_rotator.js            # Daily contract updater
+└── test/
+    ├── test_bugs.js                    # Vulnerability tests
+    └── test_chaos.js                   # Economic model tests
