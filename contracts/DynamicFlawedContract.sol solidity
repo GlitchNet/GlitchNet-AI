@@ -1,0 +1,54 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+import "./libraries/BugTemplates.sol";
+import "./libraries/ChaosMath.sol";
+
+contract DynamicFlawedContract {
+    using BugTemplates for BugTemplates.BugRegistry;
+    using ChaosMath for uint256;
+    
+    address public aiOperator;
+    uint256 public dailyBugNonce;
+    BugTemplates.BugRegistry private bugRegistry;
+    
+    mapping(address => uint256) private _balances;
+    
+    event ContractRotated(uint256 indexed nonce, string bugType);
+    event BalanceGlitched(address indexed account, string message);
+
+    constructor(address initialOperator) {
+        aiOperator = initialOperator;
+        _rotateContract();
+    }
+
+    function _rotateContract() internal {
+        dailyBugNonce++;
+        bugRegistry.applyRandomBug(dailyBugNonce);
+        emit ContractRotated(dailyBugNonce, bugRegistry.getCurrentBugName());
+    }
+
+    function balanceOf(address account) public view returns (bytes memory) {
+        BugTemplates.BugType currentBug = bugRegistry.activeBug;
+        
+        if(currentBug == BugTemplates.BugType.EMOJI_BALANCE) {
+            return abi.encodePacked("🔄 ", _chaoticBalance(account));
+        }
+        
+        if(currentBug == BugTemplates.BugType.NEGATIVE_REWARDS) {
+            return abi.encodePacked("-", _chaoticBalance(account));
+        }
+        
+        return abi.encodePacked(_chaoticBalance(account));
+    }
+
+    function _chaoticBalance(address account) internal view returns (uint256) {
+        return _balances[account].chaoticAdd(dailyBugNonce);
+    }
+
+    // AI Operator only
+    function forceRotation() external {
+        require(msg.sender == aiOperator, "Only AI can rotate");
+        _rotateContract();
+    }
+}
